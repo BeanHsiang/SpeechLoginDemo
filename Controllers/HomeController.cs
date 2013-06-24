@@ -34,21 +34,21 @@ namespace SpeechLoginDemo.Controllers
 
         public ActionResult Welcome()
         {
-            //if (Request.ContentType.Equals("audio/x-mpeg"))
-            //{
-            //    using (BinaryReader br = new System.IO.BinaryReader(Request.InputStream))
-            //    {
-            //        int length = 0;
-            //        byte[] byt = new byte[1000];
-            //        using (FileStream fs = System.IO.File.Create("d:\\output.mp3"))
-            //        {
-            //            while ((length = br.Read(byt, 0, byt.Length)) > 0)
-            //            {
-            //                fs.Write(byt, 0, length);
-            //            }
-            //        }
-            //    }
-            //}
+            if (Request.ContentType.Equals("audio/x-mpeg"))
+            {
+                using (BinaryReader br = new System.IO.BinaryReader(Request.InputStream))
+                {
+                    int length = 0;
+                    byte[] byt = new byte[1000];
+                    using (FileStream fs = System.IO.File.Create("d:\\output.mp3"))
+                    {
+                        while ((length = br.Read(byt, 0, byt.Length)) > 0)
+                        {
+                            fs.Write(byt, 0, length);
+                        }
+                    }
+                }
+            }
             var txt = Recognize();
             return Content(Session["ValidateCode"].ToString() == txt ? "验证通过" : "验证不通过");
         }
