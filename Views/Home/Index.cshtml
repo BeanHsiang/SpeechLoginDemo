@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Speech Login Demo</title>
+    <script type="text/javascript" src="/Scripts/swfobject.js"></script>
+    <script type="text/javascript" src="/Scripts/greedyspeech.js"></script>
+    <script type="text/javascript" src="/Scripts/jquery-1.5.1.min.js"></script>
+    <script type="text/javascript">
+        function startRecordCallback() {
+            $("#info").text("start record");
+            GreedySpeech.hide();
+        }
+
+        function startRecordErrorCallback(err) {
+            $("#info").text(err.toString());
+            GreedySpeech.show();
+            GreedySpeech.set();
+        }
+
+        function stopRecordCallback() {
+            $("#info").text("stop record");
+            GreedySpeech.upload("uploadCallback");
+            $("#info").text("start upload");
+        }
+
+        function uploadCallback(msg) {
+            $("#info").text("upload success");
+            $("#info").text(msg.toString());
+        }
+
+        $(function () {
+            GreedySpeech.setup({
+                id: "SpeechContainer",
+                uploadUrl: "/home/welcome"
+            });
+
+            $("#spcBtn").mousedown(function () {
+                GreedySpeech.startRecord("startRecordCallback", "startRecordErrorCallback");
+            });
+
+            $("#spcBtn").mouseup(function () {
+                GreedySpeech.stopRecord("stopRecordCallback");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <img src="@Url.Action("GetCaptcha", "Home")" />
+        <div>
+            <span id="spcBtn" style="border-width:1px;border:outset;cursor: pointer ">按下说话</span>&nbsp;&nbsp;&nbsp;&nbsp;状态：<span id="info"></span>
+            <div id="SpeechContainer">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
